@@ -6,8 +6,12 @@ import json
 import os
 from .utils.dataIO import fileIO
 
+# just for the record, the cog is called imdb-scrap because it's a scrappy version of the original, not imdb [is] crap, because it's not.
+
 class imdbscrap:
-	"""A scrapped together version of the original imdb module from Red v1."""
+	"""A scrapped together version of the original imdb module from Red v1.
+	
+	It's functionally the same as V1 - copy your existing API key over if you have it. If you never got one for V1, get an API key from http://www.myapifilms.com//token.do"""
 
 	def __init__(self, bot):
 		self.bot = bot
@@ -15,16 +19,13 @@ class imdbscrap:
 
 	@commands.command(pass_context=False)
 	async def imdb(self, *message):
-		msg = message#.split()
+		msg = message
 		if self.settings["MYAPIFILMS_TOKEN"] == "TOKENHERE":
-			await self.bot.say("`YOU NONG YOU MESSED UP THE SETTINGS`")
+			await self.bot.say("`You'll need to put your API key into data/imdbscrap/settings.json`")
 			return False
 		if len(msg) > 1:
-#				if len(msg[1]) > 1 and len([msg[1]]) < 20:
 						try:
-#							msg.remove(msg[0])
 							msg = "+".join(msg)
-#							await self.bot.say("debug: " + msg)
 							search = "http://api.myapifilms.com/imdb/title?format=json&title=" + msg + "&token=" + self.settings["MYAPIFILMS_TOKEN"]
 							async with aiohttp.get(search) as r:
 								result = await r.json()
@@ -36,8 +37,6 @@ class imdbscrap:
 								await self.bot.say(msg)
 						except:
 							await self.bot.say("`Error.`")
-#				else:
-#					await self.bot.say("`Invalid search.`")
 		else:
 			await self.bot.say("imdb [text]")
 
